@@ -23,6 +23,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
+    publicPath: './', //后来添加原来没有
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].js?v=[chunkhash]'),
     chunkFilename: utils.assetsPath('js/[id].js?v=[chunkhash]')

@@ -142,19 +142,19 @@ export default {
       },
       isRespond: false,
       //提交评论参数
-      commentData: {
-        avatar: "", //头像
-        type: "0", //评论类型（0代表文章评论，1代表友链评论）
-        articleId: 0, //文章id
-        rootId: -1, //根评论id，如果是针对文字评论直接用-1表示
-        toCommentId: -1, //所回复评论的id
-        toCommentUserId: -1, //所评论的用户id
-        content: "", //文本框输入内容
-        author: "",
-        qq: "",
-        email: "",
-        url: "",
-      },
+      // commentData: {
+      //   avatar: "", //头像
+      //   type: "0", //评论类型（0代表文章评论，1代表友链评论）
+      //   articleId: 0, //文章id
+      //   rootId: -1, //根评论id，如果是针对文字评论直接用-1表示
+      //   toCommentId: -1, //所回复评论的id
+      //   toCommentUserId: -1, //所评论的用户id
+      //   content: "", //文本框输入内容
+      //   author: "",
+      //   qq: "",
+      //   email: "",
+      //   url: "",
+      // },
       // content: "", //文本框输入内容
       pBody: true, //表情打开控制
       commentList: [], //评论列表数据
@@ -289,40 +289,40 @@ export default {
       return str;
     },
     //发送留言
-    sendMsg: function () {
-      //留言
-      var that = this;
-      if (that.commentData.content) {
-        that.sendTip = "咻~~";
-        sendComment(
-          that.commentData
-          // that.type,
-          // that.articleId,
-          // that.rootId,
-          // that.toCommentId,
-          // that.toCommentUserId,
-          // that.textarea
-        ).then((response) => {
-          that.content = "";
-          that.rootId = -1;
-          that.toCommentId = -1;
-          that.toCommentUserId = -1;
+    // sendMsg: function () {
+    //   //留言
+    //   var that = this;
+    //   if (that.commentData.content) {
+    //     that.sendTip = "咻~~";
+    //     sendComment(
+    //       that.commentData
+    //       // that.type,
+    //       // that.articleId,
+    //       // that.rootId,
+    //       // that.toCommentId,
+    //       // that.toCommentUserId,
+    //       // that.textarea
+    //     ).then((response) => {
+    //       that.content = "";
+    //       that.rootId = -1;
+    //       that.toCommentId = -1;
+    //       that.toCommentUserId = -1;
 
-          that.routeChange();
-          that.removeRespond();
-          var timer02 = setTimeout(function () {
-            that.sendTip = "发送~";
-            clearTimeout(timer02);
-          }, 1000);
-        });
-      } else {
-        that.sendTip = "内容不能为空~";
-        var timer = setTimeout(function () {
-          that.sendTip = "发送~";
-          clearTimeout(timer);
-        }, 3000);
-      }
-    },
+    //       that.routeChange();
+    //       that.removeRespond();
+    //       var timer02 = setTimeout(function () {
+    //         that.sendTip = "发送~";
+    //         clearTimeout(timer02);
+    //       }, 1000);
+    //     });
+    //   } else {
+    //     that.sendTip = "内容不能为空~";
+    //     var timer = setTimeout(function () {
+    //       that.sendTip = "发送~";
+    //       clearTimeout(timer);
+    //     }, 3000);
+    //   }
+    // },
     respondMsg: function (rootId, toCommentId, toCommentUserId) {
       //回复留言
       // console.log(leavePid,pid);
@@ -356,78 +356,78 @@ export default {
 
       this.$parent.respondMsg(rootId, toCommentId, toCommentUserId)
     },
-    removeRespond: function () {
-      //取消回复留言
-      this.isRespond = false;
-      this.commentData.rootId = -1;
-      this.commentData.toCommentId = -1;
-      this.commentData.toCommentUserId = -1;
-      this.$refs.tmsgBox.insertBefore(
-        this.$refs.commentBox,
-        this.$refs.listDom
-      );
-    },
-    showCommentList: function (initData) {
-      //评论列表
-      var that = this;
-      that.commentData.articleId =
-        that.$route.query.aid == undefined
-          ? 1
-          : parseInt(that.$route.query.aid); //获取传参的aid
-      that.queryParams.articleId = that.commentData.articleId;
-      //判断当前用户是否登录
-      // var token = getToken();
-      // if (token) {
-      //   that.haslogin = true;
-      // } else {
-      //   that.haslogin = false;
-      // }
+    // removeRespond: function () {
+    //   //取消回复留言
+    //   this.isRespond = false;
+    //   this.commentData.rootId = -1;
+    //   this.commentData.toCommentId = -1;
+    //   this.commentData.toCommentUserId = -1;
+    //   this.$refs.tmsgBox.insertBefore(
+    //     this.$refs.commentBox,
+    //     this.$refs.listDom
+    //   );
+    // },
+    // showCommentList: function (initData) {
+    //   //评论列表
+    //   var that = this;
+    //   that.commentData.articleId =
+    //     that.$route.query.aid == undefined
+    //       ? 1
+    //       : parseInt(that.$route.query.aid); //获取传参的aid
+    //   that.queryParams.articleId = that.commentData.articleId;
+    //   //判断当前用户是否登录
+    //   // var token = getToken();
+    //   // if (token) {
+    //   //   that.haslogin = true;
+    //   // } else {
+    //   //   that.haslogin = false;
+    //   // }
 
-      //公用设置数据方法
+    //   //公用设置数据方法
 
-      if (that.$route.name == "DetailArticle") {
-        //文章列表的评论
-        that.commentData.type = "0";
-        getArticleComment(that.queryParams).then((response) => {
-          console.log(response);
-          that.setData(initData, response);
-        });
-      } else if (that.$route.name == "FriendsLink") {
-        //其他评论
-        that.commentData.type = "1";
-        getLinkComment(that.queryParams).then((response) => {
-          that.setData(initData, response);
-        });
-      }
-    },
-    addMoreFun: function () {
-      //查看更多
-      this.queryParams.pageNum++;
-      this.showCommentList(false);
-    },
-    routeChange: function () {
-      //重新加载
-      var that = this;
-      this.queryParams.pageNum = 1;
-      this.showCommentList(true);
-    },
-    changeInfo: function (e) {
-      let qq = this.commentData.qq;
-      if (qq) {
-        this.commentData.avatar =
-          "https://q.qlogo.cn/g?b=qq&nk=" + qq + "&s=100";
-        //获取昵称
-        getQQInfo(qq).then((res) => {
-          console.log(res);
+    //   if (that.$route.name == "DetailArticle") {
+    //     //文章列表的评论
+    //     that.commentData.type = "0";
+    //     getArticleComment(that.queryParams).then((response) => {
+    //       console.log(response);
+    //       that.setData(initData, response);
+    //     });
+    //   } else if (that.$route.name == "FriendsLink") {
+    //     //其他评论
+    //     that.commentData.type = "1";
+    //     getLinkComment(that.queryParams).then((response) => {
+    //       that.setData(initData, response);
+    //     });
+    //   }
+    // },
+    // addMoreFun: function () {
+    //   //查看更多
+    //   this.queryParams.pageNum++;
+    //   this.showCommentList(false);
+    // },
+    // routeChange: function () {
+    //   //重新加载
+    //   var that = this;
+    //   this.queryParams.pageNum = 1;
+    //   this.showCommentList(true);
+    // },
+    // changeInfo: function (e) {
+    //   let qq = this.commentData.qq;
+    //   if (qq) {
+    //     this.commentData.avatar =
+    //       "https://q.qlogo.cn/g?b=qq&nk=" + qq + "&s=100";
+    //     //获取昵称
+    //     getQQInfo(qq).then((res) => {
+    //       console.log(res);
          
-          this.commentData.author = res.nickname;
-        });
-      }
-      //不保存评论内容
-      this.commentData.content = "";
+    //       this.commentData.author = res.nickname;
+    //     });
+    //   }
+    //   //不保存评论内容
+    //   this.commentData.content = "";
 
-      localStorage.setItem("commentData", JSON.stringify(this.commentData));
-    },
+    //   localStorage.setItem("commentData", JSON.stringify(this.commentData));
+    // },
   },
   // components: {
   //   //定义组件
@@ -441,7 +441,7 @@ export default {
     // console.log(this.$route);
     // var that = this;
     // that.routeChange();
-    this.commentData=JSON.parse(localStorage.getItem("commentData"))
+    // this.commentData=JSON.parse(localStorage.getItem("commentData"))
   },
   mounted() {},
 };

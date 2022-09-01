@@ -9,7 +9,7 @@
         >
       </h3>
       <!-- 发表评论表单 部分 -->
-      <el-form class="comment-from">
+      <el-form class="comment-from" :model="commentData">
         <div class="comment-input">
           <div class="input-left-box">
 <img
@@ -198,17 +198,9 @@ export default {
   data() {
     //选项 / 数据
     return {
-      respondBox: "", //评论表单
-      listDom: "", //评论列表
-      tmsgBox: "", //总评论盒子
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        articleId: 0,
-      },
-      isRespond: false,
+      
       //提交评论参数
+      
       commentData:{
           avatar:"",//头像
           type:"0",//评论类型（0代表文章评论，1代表友链评论）
@@ -222,6 +214,17 @@ export default {
           email:"",
           url:""
       },
+      respondBox: "", //评论表单
+      listDom: "", //评论列表
+      tmsgBox: "", //总评论盒子
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        articleId: 0,
+      },
+      isRespond: false,
+      
       // content: "", //文本框输入内容
       pBody: true, //表情打开控制
       commentList: [], //评论列表数据
@@ -433,7 +436,12 @@ export default {
     },
     showCommentList: function (initData) {
       //评论列表
+      
       var that = this;
+      console.log("articleId--url->"+ that.$route.query.aid);
+      console.log("articleId--query->"+that.queryParams.articleId)
+      console.log(that.commentData)
+      console.log("articleId--data->"+this.commentData.articleId);
       that.commentData.articleId =
         that.$route.query.aid == undefined
           ? 1
@@ -493,7 +501,7 @@ export default {
       //不保存评论内容
       this.commentData.content=""
 
-      localStorage.setItem('commentData', JSON.stringify(this.commentData));
+      localStorage.setItem('commentDataInfo', JSON.stringify(this.commentData));
     },
   },
   // components: {
@@ -512,7 +520,10 @@ export default {
   },
   mounted() {
     //页面加载完成后
-    this.commentData=JSON.parse(localStorage.getItem("commentData"))
+    var localCommentData=JSON.parse(localStorage.getItem("commentDataInfo"))
+    if(localCommentData){
+        this.commentData=localCommentData
+    }
     this.routeChange();
   },
 };
